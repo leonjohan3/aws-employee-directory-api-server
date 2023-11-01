@@ -12,3 +12,4 @@ Employee Directory API Server used for AWS deployments
 1. Limit number of employees returned
 2. Add validation
 3. Add a health check
+
