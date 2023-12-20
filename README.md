@@ -9,7 +9,12 @@ Employee Directory API Server used for AWS deployments
 5. [](<>)
 
 # TODO
-1. Limit number of employees returned
+1. Limit number of employees returned (implement paging)
 2. Add validation
 3. Add a health check
+
+# To run application
+- jar -xf myapp.jar
+- java -cp "BOOT-INF/classes:BOOT-INF/lib/*" com.example.MyApplication
+
 

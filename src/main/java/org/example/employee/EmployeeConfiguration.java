@@ -1,25 +1,12 @@
 package org.example.employee;
 
-import static org.springframework.security.config.Customizer.withDefaults;
-
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration(proxyBeanMethods = false)
-@EnableWebSecurity
+//@EnableWebSecurity
 public class EmployeeConfiguration {
 
     @Bean
@@ -41,6 +28,8 @@ public class EmployeeConfiguration {
         return employees;
     }
 
+    /*
+
     @Bean
     SecurityFilterChain securityFilterChain(final HttpSecurity http) throws Exception {
 //        http.anonymous();
@@ -54,6 +43,9 @@ public class EmployeeConfiguration {
     UserDetailsService userDetailsService() {
         return new InMemoryUserDetailsManager();
     }
+     */
+
+    /*
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
@@ -65,6 +57,7 @@ public class EmployeeConfiguration {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
+     */
 
     /*
 
