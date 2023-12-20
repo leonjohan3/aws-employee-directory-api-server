@@ -16,4 +16,4 @@ WORKDIR ${WORK_DIR}
 USER nobody
 
 EXPOSE 8080
-ENTRYPOINT ["java", "-cp", "BOOT-INF/classes:BOOT-INF/lib/*", "org.example.employee.EmployeeDirectoryApplication"]
+ENTRYPOINT ["java", "-Xms384m", "-Xmx384m", "-XshowSettings", "-cp", "BOOT-INF/classes:BOOT-INF/lib/*", "org.example.employee.EmployeeDirectoryApplication"]

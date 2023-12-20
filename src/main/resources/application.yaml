@@ -7,53 +7,53 @@
 #      example:
 #        employee: INFO
 
-#spring:
+spring:
 #  mvc:
 #    servlet:
 #      load-on-startup: 1
 #
-#  main:
-#    banner-mode: off
-#
-#  application:
-#    admin:
-#      enabled: false
-#
-#  jmx:
-#    enabled: false
+  main:
+    banner-mode: off
+
+  application:
+    admin:
+      enabled: false
+
+  jmx:
+    enabled: false
 #
 #  lifecycle:
 #    timeout-per-shutdown-phase: 10s
-#  web:
-#    resources:
-#      add-mappings: false
+  web:
+    resources:
+      add-mappings: false
 
-#server:
+server:
 #
 #  port: 8080
 #
-#  servlet:
-#    encoding:
-#      enabled: false
-#    multipart:
-#      enabled: false
-#
-#  compression:
-#    enabled: false
-#
-#  shutdown: graceful
+  servlet:
+    encoding:
+      enabled: false
+    multipart:
+      enabled: false
+
+  compression:
+    enabled: false
+
+  shutdown: graceful
 #  max-http-header-size: 2KB
 #
-#  tomcat:
+  tomcat:
 #    connection-timeout: 5s
-#    mbeanregistry:
-#      enabled: false
-#    resource:
-#      allow-caching: false
+    mbeanregistry:
+      enabled: false
+    resource:
+      allow-caching: false
 #    remoteip:
 #      remote-ip-header: x-forwarded-for
-#    accesslog:
-#      enabled: false
+    accesslog:
+      enabled: false
 #
 #error:
 #  include-message: always
