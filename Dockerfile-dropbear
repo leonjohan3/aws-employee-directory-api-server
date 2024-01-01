@@ -1,0 +1,24 @@
+FROM alpine:3.18.5
+
+ENV TZ              Australia/Sydney
+ENV HOME            /root
+ENV TMPDIR          /tmp
+ENV PROMPT_COMMAND  "history -a"
+
+COPY authorized_keys /tmp/
+
+RUN apk --no-cache add tzdata dropbear curl bash && \
+    ln -snf /usr/share/zoneinfo/$TZ /etc/localtime  &&  echo $TZ > /etc/timezone && \
+    mkdir -p /etc/dropbear && \
+    mkdir -p /root/.ssh && mv /tmp/authorized_keys /root/.ssh && chmod -R go-rwx /root/.ssh && \
+    echo /bin/bash >> /etc/shells && sed -i -e '/^root/s/ash/bash/' /etc/passwd && \
+    echo "alias pg=less" > $HOME/.bash_profile && echo 'alias ll="ls -l"' >> $HOME/.bash_profile && \
+    apk --no-cache add docs dropbear-doc 
+
+
+WORKDIR ${HOME}
+
+EXPOSE 22
+#ENTRYPOINT ["/bin/bash"]
+ENTRYPOINT ["/usr/sbin/dropbear", "-R", "-F", "-E", "-m", "-s", "-I", "120", "-T", "1", "-e"]
+
