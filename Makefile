@@ -17,10 +17,9 @@ build:
 	docker build --progress plain -t $(IMAGE_NAME) .
 
 push:
-	docker tag $(IMAGE_NAME):latest $(IMAGE_NAME):$(VERSION)
 	aws ecr get-login-password | docker login --username AWS --password-stdin $(AWS_ACCOUNT_ID).dkr.ecr.$(REGION).amazonaws.com
-	docker tag $(IMAGE_NAME):$(VERSION) $(AWS_ACCOUNT_ID).dkr.ecr.$(REGION).amazonaws.com/$(IMAGE_NAME)
-	docker push $(AWS_ACCOUNT_ID).dkr.ecr.$(REGION).amazonaws.com/$(IMAGE_NAME)
+	docker tag $(IMAGE_NAME):latest $(AWS_ACCOUNT_ID).dkr.ecr.$(REGION).amazonaws.com/$(IMAGE_NAME):$(VERSION)
+	docker push $(AWS_ACCOUNT_ID).dkr.ecr.$(REGION).amazonaws.com/$(IMAGE_NAME):$(VERSION)
 
 run: build
 	docker run --rm -p 8080:8080 -d --name $(IMAGE_NAME) $(IMAGE_NAME)
