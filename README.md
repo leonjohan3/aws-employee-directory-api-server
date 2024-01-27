@@ -17,4 +17,5 @@ Employee Directory API Server used for AWS deployments
 - jar -xf myapp.jar
 - java -cp "BOOT-INF/classes:BOOT-INF/lib/*" com.example.MyApplication
 
-
+# Install Java on 2023
+- `sudo dnf -y install java-17-amazon-corretto-devel`
