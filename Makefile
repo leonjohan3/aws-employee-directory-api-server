@@ -13,6 +13,7 @@ AWS_ACCOUNT_ID = $(filter-out $@,$(MAKECMDGOALS))
 	@:
 
 build:
+	sudo dnf -y install java-17-amazon-corretto-devel
 	./gradlew build
 	docker build --progress plain -t $(IMAGE_NAME) .
 
