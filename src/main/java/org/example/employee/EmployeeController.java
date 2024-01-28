@@ -113,4 +113,10 @@ public class EmployeeController {
         requestHeaders.add(CONTENT_TYPE, APPLICATION_JSON_VALUE);
         restTemplate.exchange("http://localhost:8080/actuator/shutdown", POST, new HttpEntity<>(requestHeaders), String.class);
     }
+
+    @GetMapping(value = "/app-config", produces = APPLICATION_JSON_VALUE)
+    String getAwsAppConfig() {
+        return restTemplate.getForObject(
+            "http://localhost:2772/applications/aws-employee-directory/environments/prod/configurations/aws-employee-directory", String.class);
+    }
 }
