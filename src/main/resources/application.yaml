@@ -75,6 +75,8 @@ management:
       exposure:
         include: '*'
   endpoint:
+    shutdown:
+      enabled: true
     env:
       show-values: ALWAYS
     health:
