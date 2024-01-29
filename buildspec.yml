@@ -1,0 +1,88 @@
+version: 0.2
+
+env:
+  variables:
+    SAM_CLI_TELEMETRY: 0
+
+phases:
+  install:
+    commands:
+      # - pwd
+      # - dnf -y upgrade
+      # - dnf -y install iproute tree hostname
+      # - dnf -y install java-11-amazon-corretto-devel
+      # - alternatives --set java /usr/lib/jvm/java-11-amazon-corretto.x86_64/bin/java
+      # - export JAVA_HOME=/usr/lib/jvm/java-11-amazon-corretto.x86_64
+      # - export JDK_HOME=/usr/lib/jvm/java-11-amazon-corretto.x86_64
+      # - export JRE_HOME=/usr/lib/jvm/java-11-amazon-corretto.x86_64
+      # - export TZ=Australia/Melbourne
+      # - echo $TZ
+      - ln -snf /usr/share/zoneinfo/$TZ /etc/localtime
+      - echo $TZ > /etc/timezone
+      # - curl -sL -o /tmp/sam.zip https://github.com/aws/aws-sam-cli/releases/latest/download/aws-sam-cli-linux-x86_64.zip
+      # - file /tmp/sam.zip
+      # - unzip -qq /tmp/sam.zip -d /tmp/sam-installation
+      # - /tmp/sam-installation/install
+      # - sam --version
+      # - rm -rf /tmp/sam-installation
+      # - mkdir -p $HOME/.gradle
+      # - echo 'org.gradle.console=plain' > $HOME/.gradle/gradle.properties
+      # - echo 'org.gradle.daemon=false' >> $HOME/.gradle/gradle.properties
+      # - dnf -y upgrade
+
+  # pre_build:
+  #   commands:
+  #     - sam validate --lint
+
+  build:
+    commands:
+      # - env
+      # - df -h
+      # - cat /etc/os-release
+      # - uname -a
+      # - docker info
+      # - echo $JAVA_HOME
+      # - java -XshowSettings -version
+      # - aws sts get-caller-identity
+      # - cd
+      # - ls -lA
+      # - cd .gradle
+      # - ls -lA
+      # - cd
+      # - cat .bash_profile
+      # - cat .bashrc
+      # - ps -ef
+      # - cd $CODEBUILD_SRC_DIR
+      # - ls -lA
+      # - alias
+      # - curl -s http://checkip.amazonaws.com
+      # - cat /codebuild/global.json
+      # - cat /codebuild/image/config/runtimes.yml
+      # - cat /codebuild/output/tmp/env.sh
+      # - curl -v $(cat /codebuild/readonly/bin/ip_address.txt)
+      # - cat /codebuild/readonly/build-info.json
+      # - cat /codebuild/readonly/variables.json
+      # - tree /codebuild
+      # - file /codebuild/bootstrap/linux-bootstrap
+      # - ./gradlew build
+      # - hostname
+      # - uname -sr
+      # - uname -p
+      # - aws sqs receive-message --queue-url https://sqs.ap-southeast-2.amazonaws.com/652299490072/dlq-notification-service --attribute-names All --message-attribute-names All --max-number-of-messages 10 --wait-time-seconds 20
+      # - aws sqs receive-message --queue-url https://sqs.ap-southeast-2.amazonaws.com/652299490072/dlq-notification-service --attribute-names All --message-attribute-names All --max-number-of-messages 10 --wait-time-seconds 20
+      # - aws sqs receive-message --queue-url https://sqs.ap-southeast-2.amazonaws.com/652299490072/dlq-notification-service --attribute-names All --message-attribute-names All --max-number-of-messages 10 --wait-time-seconds 20
+      # - sam build
+      - java -version
+      # - zip lambda.zip index.py
+      # - aws lambda update-function-code --function-name sam-employee-directory-lambda-in-TheLambdaFunction-JWyiRJRwXplf --zip-file fileb://lambda.zip --publish
+
+# artifacts:
+#   files:
+#     - appspec.yaml
+    # - lambda.zip
+    # - build/**/*
+  # discard-paths: no
+
+# cache:      TODO - figure out how cache works
+#   paths:
+#     - '/root/.m2/**/*'
