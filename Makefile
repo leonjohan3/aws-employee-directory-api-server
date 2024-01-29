@@ -13,11 +13,11 @@ AWS_ACCOUNT_ID = $(filter-out $@,$(MAKECMDGOALS))
 	@:
 
 build:
-	sudo dnf -y install java-17-amazon-corretto-devel
+	#sudo dnf -y install java-17-amazon-corretto-devel
 	./gradlew build
 	docker build --progress plain -t $(IMAGE_NAME) .
 
-push:
+push: build
 	aws ecr get-login-password | docker login --username AWS --password-stdin $(AWS_ACCOUNT_ID).dkr.ecr.$(REGION).amazonaws.com
 	docker tag $(IMAGE_NAME):latest $(AWS_ACCOUNT_ID).dkr.ecr.$(REGION).amazonaws.com/$(IMAGE_NAME):$(VERSION)
 	docker push $(AWS_ACCOUNT_ID).dkr.ecr.$(REGION).amazonaws.com/$(IMAGE_NAME):$(VERSION)

@@ -73,12 +73,13 @@ phases:
       # - aws sqs receive-message --queue-url https://sqs.ap-southeast-2.amazonaws.com/652299490072/dlq-notification-service --attribute-names All --message-attribute-names All --max-number-of-messages 10 --wait-time-seconds 20
       # - sam build
       # - java -version
-      - ./gradlew build
+      # - ./gradlew build
       # - zip lambda.zip index.py
       # - aws lambda update-function-code --function-name sam-employee-directory-lambda-in-TheLambdaFunction-JWyiRJRwXplf --zip-file fileb://lambda.zip --publish
-      - cd $HOME
-      - du -hs $(ls -A)
-      - docker info
+      # - cd $HOME
+      # - du -hs $(ls -A)
+      # - docker info
+      - make push $(echo $CODEBUILD_BUILD_ARN | awk -F ':' '{print $5}')
 
 # artifacts:
 #   files:
@@ -87,6 +88,6 @@ phases:
     # - build/**/*
   # discard-paths: no
 
-# cache:
-#   paths:
-#     - '/root/.gradle/**/*'
+cache:
+  paths:
+    - '/root/.gradle/**/*'
