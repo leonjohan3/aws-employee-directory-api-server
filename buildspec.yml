@@ -25,9 +25,9 @@ phases:
       # - /tmp/sam-installation/install
       # - sam --version
       # - rm -rf /tmp/sam-installation
-      # - mkdir -p $HOME/.gradle
-      # - echo 'org.gradle.console=plain' > $HOME/.gradle/gradle.properties
-      # - echo 'org.gradle.daemon=false' >> $HOME/.gradle/gradle.properties
+      - mkdir -p $HOME/.gradle
+      - echo 'org.gradle.console=plain' > $HOME/.gradle/gradle.properties
+      - echo 'org.gradle.daemon=false' >> $HOME/.gradle/gradle.properties
       # - dnf -y upgrade
 
   # pre_build:
@@ -72,7 +72,8 @@ phases:
       # - aws sqs receive-message --queue-url https://sqs.ap-southeast-2.amazonaws.com/652299490072/dlq-notification-service --attribute-names All --message-attribute-names All --max-number-of-messages 10 --wait-time-seconds 20
       # - aws sqs receive-message --queue-url https://sqs.ap-southeast-2.amazonaws.com/652299490072/dlq-notification-service --attribute-names All --message-attribute-names All --max-number-of-messages 10 --wait-time-seconds 20
       # - sam build
-      - java -version
+      # - java -version
+      - ./gradlew build
       # - zip lambda.zip index.py
       # - aws lambda update-function-code --function-name sam-employee-directory-lambda-in-TheLambdaFunction-JWyiRJRwXplf --zip-file fileb://lambda.zip --publish
 
