@@ -114,13 +114,9 @@ public class EmployeeController {
         restTemplate.exchange("http://localhost:8080/actuator/shutdown", POST, new HttpEntity<>(requestHeaders), String.class);
     }
 
-    /*
-    commenting out because of error: [appconfig agent] 2024/01/29 00:02:14 ERROR retrieve failure for 'aws-employee-directory:prod:aws-employee-directory': bad gateway: network error connecting to service (retry in 60s)
-
     @GetMapping(value = "/app-config", produces = APPLICATION_JSON_VALUE)
     String getAwsAppConfig() {
         return restTemplate.getForObject(
             "http://localhost:2772/applications/aws-employee-directory/environments/prod/configurations/aws-employee-directory", String.class);
     }
-     */
 }
