@@ -17,7 +17,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime  &&  echo $TZ > /etc/timezone
     rm /tmp/${JAR_NAME} && chown nobody ${HEALTH_CHECK_APP} && chmod u+x ${HEALTH_CHECK_APP}
 
 WORKDIR ${HOME}
-USER nobody
+#USER nobody
 
 EXPOSE 8080
 # ENTRYPOINT ["java", "-Duser.home=/tmp", "-Xms384m", "-Xmx384m", "-XshowSettings", "-cp", "app/BOOT-INF/classes:app/BOOT-INF/lib/*", "org.example.employee.EmployeeDirectoryApplication"]
