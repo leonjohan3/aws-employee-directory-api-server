@@ -4,7 +4,11 @@ import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -118,6 +122,11 @@ public class EmployeeController {
     String getAwsAppConfig() {
         return restTemplate.getForObject(
             "http://localhost:2772/applications/aws-employee-directory/environments/prod/configurations/aws-employee-directory", String.class);
+    }
+
+    @GetMapping(value = "/app-config-via-file", produces = APPLICATION_JSON_VALUE)
+    String getAwsAppConfigFromFile() throws IOException {
+        return Files.readString(Path.of("/mnt/app-config/app-config.json"), Charset.defaultCharset());
     }
 
     @GetMapping(value = "/self-call")
