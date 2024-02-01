@@ -119,4 +119,9 @@ public class EmployeeController {
         return restTemplate.getForObject(
             "http://localhost:2772/applications/aws-employee-directory/environments/prod/configurations/aws-employee-directory", String.class);
     }
+
+    @GetMapping(value = "/self-call", produces = APPLICATION_JSON_VALUE)
+    String performSelfCallUsingServiceConnect() {
+        return restTemplate.getForObject("http://api-server:8080/my-ip", String.class);
+    }
 }
