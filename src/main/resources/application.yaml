@@ -9,6 +9,10 @@ logging:
     software:
       amazon:
         awssdk: DEBUG
+    org:
+      springframework:
+        data:
+          redis: DEBUG
 
 spring:
 #  mvc:
@@ -34,11 +38,17 @@ spring:
   cache:
     type: redis
     cache-names: employee-directory-employees
-    redis.time-to-live: 5m
-
     redis:
+      cache-null-values: false
+      enable-statistics: true
+      use-key-prefix: false
+      time-to-live: 5m
+#      host: aws-employee-directory-bxnhjl.serverless.use1.cache.amazonaws.com
+#      port: 6379
+  data:
+    redis:
+#      host: localhost
       host: aws-employee-directory-bxnhjl.serverless.use1.cache.amazonaws.com
-      port: 6379
 
 server:
 #
