@@ -1,22 +1,16 @@
 package org.example.employee;
 
-import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
-import org.springframework.boot.autoconfigure.cache.RedisCacheManagerBuilderCustomizer;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.cache.RedisCacheConfiguration;
-import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
-import org.springframework.data.redis.serializer.RedisSerializationContext.SerializationPair;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import software.amazon.awssdk.services.ecs.EcsClient;
 
 @Configuration(proxyBeanMethods = false)
 //@EnableWebSecurity
 @EnableScheduling
-@EnableCaching
+//@EnableCaching
 public class EmployeeConfiguration {
 
     @Bean
@@ -43,6 +37,7 @@ public class EmployeeConfiguration {
         return EcsClient.builder().build();
     }
 
+    /*
     @Bean
     public RedisCacheManagerBuilderCustomizer myRedisCacheManagerBuilderCustomizer() {
         return (builder) -> builder
@@ -50,8 +45,6 @@ public class EmployeeConfiguration {
                 .defaultCacheConfig().entryTtl(Duration.ofMinutes(10))
                 .serializeValuesWith(SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer())));
     }
-
-    /*
 
     @Bean
     SecurityFilterChain securityFilterChain(final HttpSecurity http) throws Exception {

@@ -74,7 +74,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/employees/{id}")
-    @Cacheable("employee-directory-employees")
+//    @Cacheable("employee-directory-employees")
     Employee getEmployee(@PathVariable final Integer id) throws EmployeeNotFoundException {
         if (employees.containsKey(id)) {
             return employees.get(id);
