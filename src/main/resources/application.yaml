@@ -1,11 +1,14 @@
 #debug: true
 
-#logging:
-#  level:
+logging:
+  level:
 #    web: DEBUG
 #    org:
 #      example:
 #        employee: INFO
+    software:
+      amazon:
+        awssdk: DEBUG
 
 spring:
 #  mvc:
@@ -27,6 +30,15 @@ spring:
   web:
     resources:
       add-mappings: false
+
+  cache:
+    type: redis
+    cache-names: employee-directory-employees
+    redis.time-to-live: 5m
+
+    redis:
+      host: aws-employee-directory-bxnhjl.serverless.use1.cache.amazonaws.com
+      port: 6379
 
 server:
 #

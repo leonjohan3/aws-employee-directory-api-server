@@ -2,11 +2,16 @@ package org.example.employee;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import software.amazon.awssdk.services.ecs.EcsClient;
 
 @Configuration(proxyBeanMethods = false)
 //@EnableWebSecurity
+@EnableScheduling
+@EnableCaching
 public class EmployeeConfiguration {
 
     @Bean
@@ -26,6 +31,11 @@ public class EmployeeConfiguration {
             .build());
 
         return employees;
+    }
+
+    @Bean
+    EcsClient getEcsClient() {
+        return EcsClient.builder().build();
     }
 
     /*

@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -25,6 +26,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import software.amazon.awssdk.services.ecs.EcsClient;
+import software.amazon.awssdk.services.ecs.model.UpdateServiceRequest;
 
 @RestController
 //@RequiredArgsConstructor
@@ -39,9 +42,12 @@ public class EmployeeController {
     private final Map<Integer, Employee> employees;
     private final RestTemplate restTemplate;
 
-    public EmployeeController(final Map<Integer, Employee> employees, final RestTemplateBuilder restTemplateBuilder) {
+    private final EcsClient ecsClient;
+
+    public EmployeeController(final Map<Integer, Employee> employees, final RestTemplateBuilder restTemplateBuilder, final EcsClient ecsClient) {
         this.employees = employees;
         this.restTemplate = restTemplateBuilder.build();
+        this.ecsClient = ecsClient;
     }
 
     @GetMapping("/employees")
@@ -68,6 +74,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/employees/{id}")
+    @Cacheable("employee-directory-employees")
     Employee getEmployee(@PathVariable final Integer id) throws EmployeeNotFoundException {
         if (employees.containsKey(id)) {
             return employees.get(id);
@@ -111,11 +118,19 @@ public class EmployeeController {
         return restTemplate.getForObject(ECS_AGENT_URI + "/task-protection/v1/state", String.class);
     }
 
-    @Scheduled(initialDelay = 2, fixedDelay = 30, timeUnit = TimeUnit.HOURS)
+//    @Scheduled(initialDelay = 2, fixedDelay = 30, timeUnit = TimeUnit.HOURS)
+    @Scheduled(initialDelay = 7, fixedDelay = 30, timeUnit = TimeUnit.MINUTES)
     void quit() throws URISyntaxException {
-        final var requestHeaders = new HttpHeaders();
-        requestHeaders.add(CONTENT_TYPE, APPLICATION_JSON_VALUE);
-        restTemplate.exchange("http://localhost:8080/actuator/shutdown", POST, new HttpEntity<>(requestHeaders), String.class);
+//        final var requestHeaders = new HttpHeaders();
+//        requestHeaders.add(CONTENT_TYPE, APPLICATION_JSON_VALUE);
+//        restTemplate.exchange("http://localhost:8080/actuator/shutdown", POST, new HttpEntity<>(requestHeaders), String.class);
+        final var serviceRequest = UpdateServiceRequest.builder()
+            .cluster(System.getenv("CLUSTER_NAME"))
+            .service(System.getenv("SERVICE_ARN"))
+            .desiredCount(0)
+            .build();
+
+        ecsClient.updateService(serviceRequest);
     }
 
     @GetMapping(value = "/app-config", produces = APPLICATION_JSON_VALUE)
