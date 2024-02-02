@@ -1,5 +1,6 @@
 package org.example.employee;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.boot.autoconfigure.cache.RedisCacheManagerBuilderCustomizer;
@@ -46,7 +47,8 @@ public class EmployeeConfiguration {
     public RedisCacheManagerBuilderCustomizer myRedisCacheManagerBuilderCustomizer() {
         return (builder) -> builder
             .withCacheConfiguration("employee-directory-employees", RedisCacheConfiguration
-                .defaultCacheConfig().serializeValuesWith(SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer())));
+                .defaultCacheConfig().entryTtl(Duration.ofMinutes(10))
+                .serializeValuesWith(SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer())));
     }
 
     /*

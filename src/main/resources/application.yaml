@@ -1,20 +1,20 @@
 #debug: true
 
-logging:
-  level:
+#logging:
+#  level:
 #    web: DEBUG
 #    org:
 #      example:
 #        employee: INFO
-    software:
-      amazon:
-        awssdk: DEBUG
-    org:
-      springframework:
-        data:
-          redis: DEBUG
-    io:
-      lettuce: DEBUG
+#    software:
+#      amazon:
+#        awssdk: DEBUG
+#    org:
+#      springframework:
+#        data:
+#          redis: DEBUG
+#    io:
+#      lettuce: DEBUG
 
 spring:
 #  mvc:
@@ -44,7 +44,7 @@ spring:
       cache-null-values: false
       enable-statistics: true
       use-key-prefix: false
-      time-to-live: 5m
+#      time-to-live: 10m
 #      host: aws-employee-directory-bxnhjl.serverless.use1.cache.amazonaws.com
 #      port: 6379
   data:
@@ -53,6 +53,10 @@ spring:
       host: aws-employee-directory-bxnhjl.serverless.use1.cache.amazonaws.com
       ssl:
         enabled: true
+
+  output:
+    ansi:
+      enabled: NEVER
 
 server:
 #
