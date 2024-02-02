@@ -13,6 +13,8 @@ logging:
       springframework:
         data:
           redis: DEBUG
+    io:
+      lettuce: DEBUG
 
 spring:
 #  mvc:
@@ -49,6 +51,8 @@ spring:
     redis:
 #      host: localhost
       host: aws-employee-directory-bxnhjl.serverless.use1.cache.amazonaws.com
+      ssl:
+        enabled: true
 
 server:
 #
