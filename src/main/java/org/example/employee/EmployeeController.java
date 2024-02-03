@@ -146,6 +146,6 @@ public class EmployeeController {
 
     @GetMapping(value = "/self-call")
     String performSelfCallUsingServiceConnect() {
-        return restTemplate.getForObject("http://api-server:8080/my-ip", String.class);
+        return restTemplate.getForObject("http://api-server.aws.employee.directory.local:8080/my-ip", String.class);
     }
 }
