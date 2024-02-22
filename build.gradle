@@ -1,7 +1,9 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.2.2'
-    id 'io.spring.dependency-management' version '1.1.4'
+//    id 'org.springframework.boot' version '3.2.2'
+    id 'org.springframework.boot' version '2.7.18'
+//    id 'io.spring.dependency-management' version '1.1.4'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
     id "io.freefair.lombok" version "8.4"
 }
 
@@ -19,12 +21,19 @@ dependencies {
 //    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
     implementation platform("software.amazon.awssdk:bom:2.23.14")
-    implementation("software.amazon.awssdk:ecs")
+    implementation "software.amazon.awssdk:ecs"
 
     implementation platform("io.awspring.cloud:spring-cloud-aws-dependencies:3.1.0")
     implementation 'io.awspring.cloud:spring-cloud-aws-starter'
 
     implementation 'org.slf4j:jcl-over-slf4j'
+
+    implementation platform("com.amazonaws:aws-xray-recorder-sdk-bom:2.15.1")
+    implementation 'com.amazonaws:aws-xray-recorder-sdk-spring'
+    implementation 'com.amazonaws:aws-xray-recorder-sdk-apache-http'
+
+//    implementation 'org.apache.httpcomponents:httpclient'
+//    implementation 'org.apache.httpcomponents.client5:httpclient5:5.3.1'
 
 //    implementation 'org.springframework.boot:spring-boot-starter-security'
     // compileOnly 'org.projectlombok:lombok'
