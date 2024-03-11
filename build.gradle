@@ -28,9 +28,9 @@ dependencies {
 
     implementation 'org.slf4j:jcl-over-slf4j'
 
-    implementation platform("com.amazonaws:aws-xray-recorder-sdk-bom:2.15.1")
-    implementation 'com.amazonaws:aws-xray-recorder-sdk-spring'
-    implementation 'com.amazonaws:aws-xray-recorder-sdk-apache-http'
+//    implementation platform("com.amazonaws:aws-xray-recorder-sdk-bom:2.15.1")
+//    implementation 'com.amazonaws:aws-xray-recorder-sdk-spring'
+//    implementation 'com.amazonaws:aws-xray-recorder-sdk-apache-http'
 
 //    implementation 'org.apache.httpcomponents:httpclient'
 //    implementation 'org.apache.httpcomponents.client5:httpclient5:5.3.1'

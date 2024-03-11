@@ -1,15 +1,9 @@
 package org.example.employee;
 
-import com.amazonaws.xray.javax.servlet.AWSXRayServletFilter;
-import com.amazonaws.xray.proxies.apache.http.HttpClientBuilder;
 import java.util.HashMap;
 import java.util.Map;
-import org.springframework.boot.autoconfigure.web.client.RestTemplateBuilderConfigurer;
-import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import software.amazon.awssdk.services.ecs.EcsClient;
 
@@ -30,6 +24,8 @@ public class EmployeeConfiguration {
     }
      */
 
+    /*
+
     @Bean
     public RestTemplateBuilder restTemplateBuilder(final RestTemplateBuilderConfigurer configurer) {
 //        var bbb = HttpClientBuilder.create().build();
@@ -45,6 +41,7 @@ public class EmployeeConfiguration {
     FilterRegistrationBean<AWSXRayServletFilter> awsXrayServletFilter() {
         return new FilterRegistrationBean<>(new AWSXRayServletFilter("aws-employee-directory"));
     }
+     */
 
     @Bean
     Map<Integer, Employee> employees() {

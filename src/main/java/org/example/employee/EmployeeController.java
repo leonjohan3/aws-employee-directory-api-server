@@ -148,4 +148,10 @@ public class EmployeeController {
     String performSelfCallUsingServiceConnect() {
         return restTemplate.getForObject("http://api-server.aws.employee.directory.local:8080/my-ip", String.class);
     }
+
+    @GetMapping(value = "/shared-ms-hello", produces = APPLICATION_JSON_VALUE)
+    String callSharedMsHello() {
+//        return restTemplate.getForObject("http://localhost:8070/hello", String.class);
+        return restTemplate.getForObject("http://shared-boot-ms.internal:8080/hello", String.class);
+    }
 }
