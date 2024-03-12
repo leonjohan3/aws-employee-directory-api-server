@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpEntity;
@@ -33,7 +34,7 @@ import software.amazon.awssdk.services.ecs.model.UpdateServiceRequest;
 //@RequiredArgsConstructor
 //@CrossOrigin
 //@CrossOrigin(methods = {RequestMethod.DELETE, RequestMethod.GET, RequestMethod.OPTIONS, RequestMethod.POST})
-//@Slf4j
+@Slf4j
 public class EmployeeController {
 
     private static final String ECS_CONTAINER_METADATA_URI_V4 = System.getenv("ECS_CONTAINER_METADATA_URI_V4");
@@ -53,7 +54,9 @@ public class EmployeeController {
     @GetMapping("/employees")
 //    @CrossOrigin
     List<Employee> getAllEmployees() {
-        return new ArrayList<>(employees.values());
+        final var result = new ArrayList<>(employees.values());
+        log.info(String.valueOf(result));
+        return result;
     }
 
     @PostMapping("/employees")
