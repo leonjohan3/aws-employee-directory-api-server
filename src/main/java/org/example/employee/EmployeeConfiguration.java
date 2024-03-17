@@ -58,6 +58,12 @@ public class EmployeeConfiguration {
             .lastName("Moe")
             .email("mmoe@yahoo.com")
             .build());
+        employees.put(3, Employee.builder()
+            .id(2)
+            .firstName("Ann")
+            .lastName("McMann")
+            .email("ann.mcmann@yahoo.com")
+            .build());
 
         return employees;
     }

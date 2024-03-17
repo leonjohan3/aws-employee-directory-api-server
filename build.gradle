@@ -14,8 +14,19 @@ repositories {
     mavenCentral()
 }
 
+//repositories {
+//    maven {
+//        url 'https://my-domain-123456789012.d.codeartifact.us-east-1.amazonaws.com/maven/DemoRepo/'
+//        credentials {
+//            username "aws"
+//            password System.env.CODEARTIFACT_AUTH_TOKEN
+//        }
+//    }
+//    mavenLocal()
+//}
+
 dependencies {
-     implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
     // implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
 //    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
@@ -23,10 +34,11 @@ dependencies {
     implementation platform("software.amazon.awssdk:bom:2.23.14")
     implementation "software.amazon.awssdk:ecs"
 
-    implementation platform("io.awspring.cloud:spring-cloud-aws-dependencies:3.1.0")
-    implementation 'io.awspring.cloud:spring-cloud-aws-starter'
+//    implementation platform("io.awspring.cloud:spring-cloud-aws-dependencies:3.1.0")
+//    implementation 'io.awspring.cloud:spring-cloud-aws-starter'
 
     implementation 'org.slf4j:jcl-over-slf4j'
+//    implementation 'org.example.starter:the-spring-boot-starter:0.0.1'
 
 //    implementation platform("com.amazonaws:aws-xray-recorder-sdk-bom:2.15.1")
 //    implementation 'com.amazonaws:aws-xray-recorder-sdk-spring'

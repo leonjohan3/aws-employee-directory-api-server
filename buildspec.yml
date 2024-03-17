@@ -36,7 +36,6 @@ phases:
 
   build:
     commands:
-      - env
       # - df -h
       # - cat /etc/os-release
       # - uname -a
@@ -79,6 +78,9 @@ phases:
       # - cd $HOME
       # - du -hs $(ls -A)
       # - docker info
+      # - aws codeartifact get-authorization-token --domain my-domain --domain-owner 123456789012 --region us-east-1 --query authorizationToken --output text > /tmp/CODEARTIFACT_AUTH_TOKEN.txt
+      # - export CODEARTIFACT_AUTH_TOKEN=$(< /tmp/CODEARTIFACT_AUTH_TOKEN.txt)
+      - env
       - make push $(echo $CODEBUILD_BUILD_ARN | awk -F ':' '{print $5}')
 
       # example: https://docs.aws.amazon.com/codepipeline/latest/userguide/ecs-cd-pipeline.html

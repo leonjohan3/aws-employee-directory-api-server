@@ -1,7 +1,5 @@
 package org.example.employee;
 
-import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
-import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 import java.io.IOException;
@@ -16,9 +14,6 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -55,6 +50,8 @@ public class EmployeeController {
 //    @CrossOrigin
     List<Employee> getAllEmployees() {
         final var result = new ArrayList<>(employees.values());
+//        final var lib = new Library();
+//        log.info("value of imported lib: {}", lib.someLibraryMethod());
         log.info(String.valueOf(result));
         return result;
     }
