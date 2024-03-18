@@ -1,7 +1,10 @@
 package org.example.employee;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.boot.autoconfigure.web.client.RestTemplateBuilderConfigurer;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -24,19 +27,19 @@ public class EmployeeConfiguration {
     }
      */
 
-    /*
 
     @Bean
     public RestTemplateBuilder restTemplateBuilder(final RestTemplateBuilderConfigurer configurer) {
 //        var bbb = HttpClientBuilder.create().build();
 //        var aaa = new HttpComponentsClientHttpRequestFactory(bbb);
-        return configurer.configure(new RestTemplateBuilder())
-            .requestFactory(() -> new HttpComponentsClientHttpRequestFactory(HttpClientBuilder.create().build()));
+        return configurer.configure(new RestTemplateBuilder()).setConnectTimeout(Duration.ofSeconds(3)).setReadTimeout(Duration.ofSeconds(6));
+//            .requestFactory(() -> new HttpComponentsClientHttpRequestFactory(HttpClientBuilder.create().build()));
 //            .requestFactory(new MyRequestFactorySupplier());
 //            .setConnectTimeout(2_000)
 //            .setReadTimeout(Duration.ofSeconds(3));
     }
 
+    /*
     @Bean
     FilterRegistrationBean<AWSXRayServletFilter> awsXrayServletFilter() {
         return new FilterRegistrationBean<>(new AWSXRayServletFilter("aws-employee-directory"));
