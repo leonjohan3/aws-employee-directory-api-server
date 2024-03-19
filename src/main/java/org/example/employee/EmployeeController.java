@@ -96,7 +96,7 @@ public class EmployeeController {
     @GetMapping("/my-ip")
     String getMyIp() {
 //        return restTemplate.getForObject("http://checkip.amazonaws.com", String.class);
-        return restTemplate.getForObject("https://z3ovda4w87.execute-api.us-east-1.amazonaws.com/prod/getip", String.class);
+        return restTemplate.getForObject("https://7s87p0wg7e.execute-api.us-east-1.amazonaws.com/prod/getip", String.class);
     }
 
     @GetMapping(value = "/task", produces = APPLICATION_JSON_VALUE)
