@@ -7,14 +7,22 @@ import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Random;
+import java.util.UUID;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,8 +30,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import software.amazon.awssdk.core.SdkBytes;
 import software.amazon.awssdk.services.ecs.EcsClient;
 import software.amazon.awssdk.services.ecs.model.UpdateServiceRequest;
+import software.amazon.awssdk.services.lambda.LambdaClient;
+import software.amazon.awssdk.services.lambda.model.InvocationType;
+import software.amazon.awssdk.services.lambda.model.InvokeRequest;
+import software.amazon.awssdk.services.lambda.model.InvokeResponse;
 
 @RestController
 //@RequiredArgsConstructor
@@ -40,10 +53,20 @@ public class EmployeeController {
 
     private final EcsClient ecsClient;
 
-    public EmployeeController(final Map<Integer, Employee> employees, final RestTemplateBuilder restTemplateBuilder, final EcsClient ecsClient) {
+    private final LambdaClient lambdaClient;
+
+    private final Random random;
+
+    private final ThreadPoolTaskExecutor taskExecutor;
+
+    public EmployeeController(final Map<Integer, Employee> employees, final RestTemplateBuilder restTemplateBuilder, final EcsClient ecsClient,
+        final LambdaClient lambdaClient, final Random random, final ThreadPoolTaskExecutor taskExecutor) {
         this.employees = employees;
         this.restTemplate = restTemplateBuilder.build();
         this.ecsClient = ecsClient;
+        this.lambdaClient = lambdaClient;
+        this.random = random;
+        this.taskExecutor = taskExecutor;
     }
 
     @GetMapping("/employees")
@@ -54,6 +77,37 @@ public class EmployeeController {
 //        log.info("value of imported lib: {}", lib.someLibraryMethod());
         log.info(String.valueOf(result));
         return result;
+    }
+
+    @PostMapping("/addItems")
+    Map<String, String> addItemsToDynamoDbTable(@RequestBody final Map<String, Integer> request) {
+        final var itemCount = request.get("itemCount");
+        final var listOfFutures = new ArrayList<Future<InvokeResponse>>();
+        log.info("item count: {}", itemCount);
+
+        for (int i = 0 ; i < itemCount ; i++) {
+
+            listOfFutures.add(taskExecutor.submit(() -> {
+
+                final var payload = String.format("{\"id\":%d,\"session-token\":\"%s\"}", random.nextInt(99_999_999), UUID.randomUUID());
+//                log.info("payload: {}", payload);
+
+                final var invokeRequest = InvokeRequest.builder()
+                    .functionName("lambdas-doing-stuff-TheLambdaFunction-jqd8ku2xZ5fC")
+                    .invocationType(InvocationType.EVENT)
+                    .payload(SdkBytes.fromString(payload, Charset.defaultCharset()))
+                    .build();
+                return lambdaClient.invoke(invokeRequest);
+            }));
+        }
+        final var listOfResults = listOfFutures.stream().map(e -> {
+            try {
+                return e.get(5, TimeUnit.SECONDS).statusCode();
+            } catch (InterruptedException | ExecutionException | TimeoutException ex) {
+                throw new RuntimeException(ex);
+            }
+        }).toList();
+        return Map.of("result", listOfResults.toString());
     }
 
     @PostMapping("/employees")

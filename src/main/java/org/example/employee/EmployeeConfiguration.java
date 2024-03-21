@@ -3,12 +3,14 @@ package org.example.employee;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import org.springframework.boot.autoconfigure.web.client.RestTemplateBuilderConfigurer;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import software.amazon.awssdk.services.ecs.EcsClient;
+import software.amazon.awssdk.services.lambda.LambdaClient;
 
 @Configuration(proxyBeanMethods = false)
 //@EnableWebSecurity
@@ -27,6 +29,16 @@ public class EmployeeConfiguration {
     }
      */
 
+    @Bean
+    public LambdaClient lambdaClient() {
+        return LambdaClient.builder()
+            .build();
+    }
+
+    @Bean
+    public Random random() {
+        return new Random(112233);
+    }
 
     @Bean
     public RestTemplateBuilder restTemplateBuilder(final RestTemplateBuilderConfigurer configurer) {
