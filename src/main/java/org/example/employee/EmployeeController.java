@@ -150,7 +150,8 @@ public class EmployeeController {
     @GetMapping("/my-ip")
     String getMyIp() {
 //        return restTemplate.getForObject("http://checkip.amazonaws.com", String.class);
-        return restTemplate.getForObject("https://7s87p0wg7e.execute-api.us-east-1.amazonaws.com/prod/getip", String.class);
+//        return restTemplate.getForObject("https://7s87p0wg7e.execute-api.us-east-1.amazonaws.com/prod/getip", String.class);
+        return String.format("THE_SSM_PARAM: %s", System.getenv("THE_SSM_PARAM"));
     }
 
     @GetMapping(value = "/task", produces = APPLICATION_JSON_VALUE)
