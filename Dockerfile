@@ -23,6 +23,6 @@ WORKDIR ${HOME}
 USER nobody
 
 EXPOSE 8080
-ENTRYPOINT ["java", "-Duser.home=/tmp", "-Xms384m", "-Xmx384m", "-Xlog:gc", "-cp", "app/BOOT-INF/classes:app/BOOT-INF/lib/*", "org.example.employee.EmployeeDirectoryApplication"]
+# ENTRYPOINT ["java", "-Duser.home=/tmp", "-Xms384m", "-Xmx384m", "-Xlog:gc", "-cp", "app/BOOT-INF/classes:app/BOOT-INF/lib/*", "org.example.employee.EmployeeDirectoryApplication"]
 # ENTRYPOINT ["java", "-Duser.home=/tmp", "-Xms768m", "-Xmx768m", "-Xlog:gc", "-cp", "app/BOOT-INF/classes:app/BOOT-INF/lib/*", "org.example.employee.EmployeeDirectoryApplication"]
-# ENTRYPOINT ["java", "-javaagent:aws-opentelemetry-agent-1.32.1.jar", "-Duser.home=/tmp", "-Xms384m", "-Xmx384m", "-Xlog:gc", "-cp", "app/BOOT-INF/classes:app/BOOT-INF/lib/*", "org.example.employee.EmployeeDirectoryApplication"]
+ENTRYPOINT ["java", "-javaagent:aws-opentelemetry-agent-1.32.1.jar", "-Duser.home=/tmp", "-Xms384m", "-Xmx384m", "-Xlog:gc", "-cp", "app/BOOT-INF/classes:app/BOOT-INF/lib/*", "org.example.employee.EmployeeDirectoryApplication"]

@@ -1,17 +1,13 @@
 package org.example.employee;
 
-import com.amazonaws.xray.javax.servlet.AWSXRayServletFilter;
-import com.amazonaws.xray.proxies.apache.http.HttpClientBuilder;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import org.springframework.boot.autoconfigure.web.client.RestTemplateBuilderConfigurer;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import software.amazon.awssdk.services.ecs.EcsClient;
 import software.amazon.awssdk.services.lambda.LambdaClient;
@@ -50,17 +46,17 @@ public class EmployeeConfiguration {
 //        var aaa = new HttpComponentsClientHttpRequestFactory(bbb);
         return configurer.configure(new RestTemplateBuilder())
             .setConnectTimeout(Duration.ofSeconds(3))
-            .setReadTimeout(Duration.ofSeconds(6))
-            .requestFactory(() -> new HttpComponentsClientHttpRequestFactory(HttpClientBuilder.create().build()));
+            .setReadTimeout(Duration.ofSeconds(6));
+//            .requestFactory(() -> new HttpComponentsClientHttpRequestFactory(HttpClientBuilder.create().build()));
 //            .requestFactory(new MyRequestFactorySupplier());
 //            .setConnectTimeout(2_000)
 //            .setReadTimeout(Duration.ofSeconds(3));
     }
 
-    @Bean
-    FilterRegistrationBean<AWSXRayServletFilter> awsXrayServletFilter() {
-        return new FilterRegistrationBean<>(new AWSXRayServletFilter("aws-employee-directory"));
-    }
+//    @Bean
+//    FilterRegistrationBean<AWSXRayServletFilter> awsXrayServletFilter() {
+//        return new FilterRegistrationBean<>(new AWSXRayServletFilter("aws-employee-directory"));
+//    }
 
     @Bean
     Map<Integer, Employee> employees() {
