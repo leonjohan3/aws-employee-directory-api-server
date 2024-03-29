@@ -3,11 +3,9 @@ package org.example.employee;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +16,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -32,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import software.amazon.awssdk.core.SdkBytes;
 import software.amazon.awssdk.services.ecs.EcsClient;
+import software.amazon.awssdk.services.ecs.model.ListServicesRequest;
 import software.amazon.awssdk.services.ecs.model.UpdateServiceRequest;
 import software.amazon.awssdk.services.lambda.LambdaClient;
 import software.amazon.awssdk.services.lambda.model.InvocationType;
@@ -85,7 +83,7 @@ public class EmployeeController {
         final var listOfFutures = new ArrayList<Future<InvokeResponse>>();
         log.info("item count: {}", itemCount);
 
-        for (int i = 0 ; i < itemCount ; i++) {
+        for (int i = 0; i < itemCount; i++) {
 
             listOfFutures.add(taskExecutor.submit(() -> {
 
@@ -174,19 +172,25 @@ public class EmployeeController {
         return restTemplate.getForObject(ECS_AGENT_URI + "/task-protection/v1/state", String.class);
     }
 
-    @Scheduled(initialDelay = 2, fixedDelay = 30, timeUnit = TimeUnit.HOURS)
-//    @Scheduled(initialDelay = 7, fixedDelay = 30, timeUnit = TimeUnit.MINUTES)
-    void quit() throws URISyntaxException {
+    //    @Scheduled(initialDelay = 2, fixedDelay = 30, timeUnit = TimeUnit.HOURS)
+    @Scheduled(initialDelay = 3, fixedDelay = 30, timeUnit = TimeUnit.MINUTES)
+    void stopAllTasksOfAllServices() {
 //        final var requestHeaders = new HttpHeaders();
 //        requestHeaders.add(CONTENT_TYPE, APPLICATION_JSON_VALUE);
 //        restTemplate.exchange("http://localhost:8080/actuator/shutdown", POST, new HttpEntity<>(requestHeaders), String.class);
-        final var serviceRequest = UpdateServiceRequest.builder()
-            .cluster(System.getenv("CLUSTER_NAME"))
-            .service(System.getenv("SERVICE_ARN"))
-            .desiredCount(0)
-            .build();
+        final var cluster = System.getenv("CLUSTER_NAME");
+        final var listServiceResponse = ecsClient.listServices(ListServicesRequest.builder().cluster(cluster).build());
 
-        ecsClient.updateService(serviceRequest);
+        for (final var service : listServiceResponse.serviceArns()) {
+
+            final var serviceRequest = UpdateServiceRequest.builder()
+                .cluster(cluster)
+                .service(service)
+                .desiredCount(0)
+                .build();
+
+            ecsClient.updateService(serviceRequest);
+        }
     }
 
     @GetMapping(value = "/app-config", produces = APPLICATION_JSON_VALUE)
