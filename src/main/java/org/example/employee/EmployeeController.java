@@ -172,8 +172,8 @@ public class EmployeeController {
         return restTemplate.getForObject(ECS_AGENT_URI + "/task-protection/v1/state", String.class);
     }
 
-    //    @Scheduled(initialDelay = 2, fixedDelay = 30, timeUnit = TimeUnit.HOURS)
-    @Scheduled(initialDelay = 3, fixedDelay = 30, timeUnit = TimeUnit.MINUTES)
+    @Scheduled(initialDelay = 2, fixedDelay = 30, timeUnit = TimeUnit.HOURS)
+//    @Scheduled(initialDelay = 3, fixedDelay = 30, timeUnit = TimeUnit.MINUTES)
     void stopAllTasksOfAllServices() {
 //        final var requestHeaders = new HttpHeaders();
 //        requestHeaders.add(CONTENT_TYPE, APPLICATION_JSON_VALUE);

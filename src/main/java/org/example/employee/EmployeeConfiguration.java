@@ -50,8 +50,8 @@ public class EmployeeConfiguration {
 //        var aaa = new HttpComponentsClientHttpRequestFactory(bbb);
         return configurer.configure(new RestTemplateBuilder())
             .setConnectTimeout(Duration.ofSeconds(3))
-            .setReadTimeout(Duration.ofSeconds(6));
-//            .requestFactory(() -> new HttpComponentsClientHttpRequestFactory(HttpClientBuilder.create().build()));
+            .setReadTimeout(Duration.ofSeconds(6))
+            .requestFactory(() -> new HttpComponentsClientHttpRequestFactory(HttpClientBuilder.create().build()));
 //            .requestFactory(new MyRequestFactorySupplier());
 //            .setConnectTimeout(2_000)
 //            .setReadTimeout(Duration.ofSeconds(3));
