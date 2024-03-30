@@ -43,9 +43,9 @@ import software.amazon.awssdk.services.lambda.model.InvokeResponse;
 @Slf4j
 public class EmployeeController {
 
+    public static final String LAMBDA_FUNCTION_NAME = System.getenv("LAMBDA_FUNCTION_NAME");
     private static final String ECS_CONTAINER_METADATA_URI_V4 = System.getenv("ECS_CONTAINER_METADATA_URI_V4");
     private static final String ECS_AGENT_URI = System.getenv("ECS_AGENT_URI");
-    private static final String LAMBDA_FUNCTION_NAME = System.getenv("LAMBDA_FUNCTION_NAME");
 
     private final Map<Integer, Employee> employees;
     private final RestTemplate restTemplate;
@@ -58,14 +58,17 @@ public class EmployeeController {
 
     private final ThreadPoolTaskExecutor taskExecutor;
 
+    private final EmployeeService employeeService;
+
     public EmployeeController(final Map<Integer, Employee> employees, final RestTemplateBuilder restTemplateBuilder, final EcsClient ecsClient,
-        final LambdaClient lambdaClient, final Random random, final ThreadPoolTaskExecutor taskExecutor) {
+        final LambdaClient lambdaClient, final Random random, final ThreadPoolTaskExecutor taskExecutor, final EmployeeService employeeService) {
         this.employees = employees;
         this.restTemplate = restTemplateBuilder.build();
         this.ecsClient = ecsClient;
         this.lambdaClient = lambdaClient;
         this.random = random;
         this.taskExecutor = taskExecutor;
+        this.employeeService = employeeService;
     }
 
     @GetMapping("/employees")
@@ -147,23 +150,19 @@ public class EmployeeController {
     }
 
     @GetMapping("/my-ip")
-    GenericApiResponse getMyIp() {
-        final var payload = "{\"key\":\"value\"}";
+    GenericApiResponse getMyIp() throws ExecutionException, InterruptedException, TimeoutException {
 
-        final var invokeRequest = InvokeRequest.builder()
-            .functionName(LAMBDA_FUNCTION_NAME)
-            .invocationType(InvocationType.REQUEST_RESPONSE)
-            .payload(SdkBytes.fromString(payload, Charset.defaultCharset()))
-            .build();
-        final var invokeResponse = lambdaClient.invoke(invokeRequest);
+        final var futureLambdaResponse = employeeService.getLambdaResponse();
+        final var checkIpResponse = restTemplate.getForObject("http://checkip.amazonaws.com", String.class);
+        final var lambdaInvokeResponse = futureLambdaResponse.get(5, TimeUnit.SECONDS);
         var lambdaResponse = "error";
 
-        if (200 == invokeResponse.statusCode()) {
-            lambdaResponse = invokeResponse.payload().asUtf8String();
+        if (200 == lambdaInvokeResponse.statusCode()) {
+            lambdaResponse = lambdaInvokeResponse.payload().asUtf8String();
         }
+        return new GenericApiResponse(lambdaResponse, checkIpResponse);
 
 //        return restTemplate.getForObject("http://checkip.amazonaws.com", String.class);
-        return new GenericApiResponse(lambdaResponse, restTemplate.getForObject("http://checkip.amazonaws.com", String.class));
 //        return restTemplate.getForObject("https://7s87p0wg7e.execute-api.us-east-1.amazonaws.com/prod/getip", String.class);
 //        return String.format("THE_SSM_PARAM: %s", System.getenv("THE_SSM_PARAM"));
     }
