@@ -45,6 +45,7 @@ public class EmployeeController {
 
     private static final String ECS_CONTAINER_METADATA_URI_V4 = System.getenv("ECS_CONTAINER_METADATA_URI_V4");
     private static final String ECS_AGENT_URI = System.getenv("ECS_AGENT_URI");
+    private static final String LAMBDA_FUNCTION_NAME = System.getenv("LAMBDA_FUNCTION_NAME");
 
     private final Map<Integer, Employee> employees;
     private final RestTemplate restTemplate;
@@ -91,7 +92,7 @@ public class EmployeeController {
 //                log.info("payload: {}", payload);
 
                 final var invokeRequest = InvokeRequest.builder()
-                    .functionName("lambdas-doing-stuff-TheLambdaFunction-jqd8ku2xZ5fC")
+                    .functionName(LAMBDA_FUNCTION_NAME)
                     .invocationType(InvocationType.EVENT)
                     .payload(SdkBytes.fromString(payload, Charset.defaultCharset()))
                     .build();
@@ -146,8 +147,23 @@ public class EmployeeController {
     }
 
     @GetMapping("/my-ip")
-    String getMyIp() {
-        return restTemplate.getForObject("http://checkip.amazonaws.com", String.class);
+    GenericApiResponse getMyIp() {
+        final var payload = "{\"key\":\"value\"}";
+
+        final var invokeRequest = InvokeRequest.builder()
+            .functionName(LAMBDA_FUNCTION_NAME)
+            .invocationType(InvocationType.REQUEST_RESPONSE)
+            .payload(SdkBytes.fromString(payload, Charset.defaultCharset()))
+            .build();
+        final var invokeResponse = lambdaClient.invoke(invokeRequest);
+        var lambdaResponse = "error";
+
+        if (200 == invokeResponse.statusCode()) {
+            lambdaResponse = invokeResponse.payload().asUtf8String();
+        }
+
+//        return restTemplate.getForObject("http://checkip.amazonaws.com", String.class);
+        return new GenericApiResponse(lambdaResponse, restTemplate.getForObject("http://checkip.amazonaws.com", String.class));
 //        return restTemplate.getForObject("https://7s87p0wg7e.execute-api.us-east-1.amazonaws.com/prod/getip", String.class);
 //        return String.format("THE_SSM_PARAM: %s", System.getenv("THE_SSM_PARAM"));
     }
@@ -172,6 +188,7 @@ public class EmployeeController {
         return restTemplate.getForObject(ECS_AGENT_URI + "/task-protection/v1/state", String.class);
     }
 
+    // TODO: add AWS scheduled event to make desired # tasks 0 for all services daily at 23:00 AEST
     @Scheduled(initialDelay = 2, fixedDelay = 30, timeUnit = TimeUnit.HOURS)
 //    @Scheduled(initialDelay = 3, fixedDelay = 30, timeUnit = TimeUnit.MINUTES)
     void stopAllTasksOfAllServices() {
@@ -209,6 +226,7 @@ public class EmployeeController {
         return restTemplate.getForObject("http://api-server.aws.employee.directory.local:8080/my-ip", String.class);
     }
 
+    // call a shared microservice
     @GetMapping(value = "/shared-ms-hello", produces = APPLICATION_JSON_VALUE)
     String callSharedMsHello() {
 //        return restTemplate.getForObject("http://localhost:8070/hello", String.class);
