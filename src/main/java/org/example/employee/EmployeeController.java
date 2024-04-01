@@ -152,14 +152,14 @@ public class EmployeeController {
     @GetMapping("/my-ip")
     GenericApiResponse getMyIp() throws ExecutionException, InterruptedException, TimeoutException {
 
-        final var futureLambdaResponse = employeeService.getLambdaResponse();
+//        final var futureLambdaResponse = employeeService.getLambdaResponse();
         final var checkIpResponse = restTemplate.getForObject("http://checkip.amazonaws.com", String.class);
-        final var lambdaInvokeResponse = futureLambdaResponse.get(5, TimeUnit.SECONDS);
-        var lambdaResponse = "error";
+//        final var lambdaInvokeResponse = futureLambdaResponse.get(5, TimeUnit.SECONDS);
+        var lambdaResponse = "not called";
 
-        if (200 == lambdaInvokeResponse.statusCode()) {
-            lambdaResponse = lambdaInvokeResponse.payload().asUtf8String();
-        }
+//        if (200 == lambdaInvokeResponse.statusCode()) {
+//            lambdaResponse = lambdaInvokeResponse.payload().asUtf8String();
+//        }
         return new GenericApiResponse(lambdaResponse, checkIpResponse);
 
 //        return restTemplate.getForObject("http://checkip.amazonaws.com", String.class);
