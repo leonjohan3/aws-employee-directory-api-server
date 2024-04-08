@@ -24,7 +24,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime  &&  echo $TZ > /etc/timezone
     curl -s https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip -o /tmp/awscliv2.zip && \
     unzip -q -d /tmp/ /tmp/awscliv2.zip && /tmp/aws/install && \
     mkdir ${WORK_DIR}  &&  cd ${WORK_DIR}  &&  jar -xf /tmp/${JAR_NAME}  && \
-    rm /tmp/${JAR_NAME} && chown nobody ${HEALTH_CHECK_APP} && chmod u+x ${HEALTH_CHECK_APP} ${HOME}/start-microservice.sh && ls -l $HOME
+    rm /tmp/${JAR_NAME} && chown nobody ${HEALTH_CHECK_APP} ${HOME}/start-microservice.sh && chmod u+x ${HEALTH_CHECK_APP} ${HOME}/start-microservice.sh && ls -l $HOME
 
 WORKDIR ${HOME}
 USER nobody
