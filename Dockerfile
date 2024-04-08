@@ -1,4 +1,5 @@
-FROM amazoncorretto:17
+# FROM amazoncorretto:17
+FROM public.ecr.aws/amazoncorretto/amazoncorretto:17
 
 ARG VERSION=0.0.1
 ARG JAR_NAME=aws-employee-directory-api-server-${VERSION}.jar
@@ -23,7 +24,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime  &&  echo $TZ > /etc/timezone
     curl -s https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip -o /tmp/awscliv2.zip && \
     unzip -q -d /tmp/ /tmp/awscliv2.zip && /tmp/aws/install && \
     mkdir ${WORK_DIR}  &&  cd ${WORK_DIR}  &&  jar -xf /tmp/${JAR_NAME}  && \
-    rm /tmp/${JAR_NAME} && chown nobody ${HEALTH_CHECK_APP} && chmod u+x ${HEALTH_CHECK_APP} ${HOME}/start-microservice.sh
+    rm /tmp/${JAR_NAME} && chown nobody ${HEALTH_CHECK_APP} && chmod u+x ${HEALTH_CHECK_APP} ${HOME}/start-microservice.sh && ls -lR $HOME
 
 WORKDIR ${HOME}
 USER nobody
