@@ -22,9 +22,9 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime  &&  echo $TZ > /etc/timezone
 #     yum install -y bind-utils procps iproute nmap && \
     yum install -y less unzip groff && \
     curl -s https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip -o /tmp/awscliv2.zip && \
-    unzip -q -d /tmp/ /tmp/awscliv2.zip && /tmp/aws/install && \
+    unzip -q -d /tmp/ /tmp/awscliv2.zip && /tmp/aws/install && rm /tmp/awscliv2.zip && \
     mkdir ${WORK_DIR}  &&  cd ${WORK_DIR}  &&  jar -xf /tmp/${JAR_NAME}  && \
-    rm /tmp/${JAR_NAME} && chown nobody ${HEALTH_CHECK_APP} ${HOME}/start-microservice.sh && chmod u+x ${HEALTH_CHECK_APP} ${HOME}/start-microservice.sh && ls -l $HOME
+    rm /tmp/${JAR_NAME} && mkdir $HOME/config && chown nobody $HOME/config ${HEALTH_CHECK_APP} ${HOME}/start-microservice.sh && chmod u+x ${HEALTH_CHECK_APP} ${HOME}/start-microservice.sh  && ls -l $HOME && du -hs /tmp/*/
 
 WORKDIR ${HOME}
 USER nobody
