@@ -26,9 +26,10 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime  &&  echo $TZ > /etc/timezone
 
 WORKDIR ${HOME}
 USER nobody
-RUN aws sts get-caller-identity
+#RUN aws sts get-caller-identity
 
 EXPOSE 8080
-ENTRYPOINT ["java", "-Duser.home=/tmp", "-Xms384m", "-Xmx384m", "-Xlog:gc", "-cp", "app/BOOT-INF/classes:app/BOOT-INF/lib/*", "org.example.employee.EmployeeDirectoryApplication"]
+ENTRYPOINT ["./start-microservice.sh"]
+# ENTRYPOINT ["java", "-Duser.home=/tmp", "-Xms384m", "-Xmx384m", "-Xlog:gc", "-cp", "app/BOOT-INF/classes:app/BOOT-INF/lib/*", "org.example.employee.EmployeeDirectoryApplication"]
 # ENTRYPOINT ["java", "-Duser.home=/tmp", "-Xms768m", "-Xmx768m", "-Xlog:gc", "-cp", "app/BOOT-INF/classes:app/BOOT-INF/lib/*", "org.example.employee.EmployeeDirectoryApplication"]
 # ENTRYPOINT ["java", "-javaagent:aws-opentelemetry-agent-1.32.1.jar", "-Duser.home=/tmp", "-Xms384m", "-Xmx384m", "-Xlog:gc", "-cp", "app/BOOT-INF/classes:app/BOOT-INF/lib/*", "org.example.employee.EmployeeDirectoryApplication"]
