@@ -7,4 +7,5 @@ aws appconfigdata start-configuration-session --application-identifier acs/aws-e
 SESSION=$(</tmp/app-config-session.txt)
 aws appconfigdata get-latest-configuration --configuration-token "$SESSION" $HOME/config/application.yaml > /dev/null
 
-exec java -Duser.home=/tmp -Xms384m -Xmx384m -Xlog:gc -cp app/BOOT-INF/classes:app/BOOT-INF/lib/* org.example.employee.EmployeeDirectoryApplication
+#exec java -Duser.home=/tmp -Xms384m -Xmx384m -Xlog:gc -cp app/BOOT-INF/classes:app/BOOT-INF/lib/* org.example.employee.EmployeeDirectoryApplication
+exec java -Dspring.profiles.active=prod -Duser.home=/tmp -Xms768m -Xmx768m -Xlog:gc -cp app/BOOT-INF/classes:app/BOOT-INF/lib/* org.example.employee.EmployeeDirectoryApplication

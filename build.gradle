@@ -57,6 +57,10 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
+//processResources {
+//    exclude 'application.*'
+//}
+
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
