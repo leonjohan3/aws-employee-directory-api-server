@@ -11,15 +11,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
-import java.util.UUID;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,14 +26,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
-import software.amazon.awssdk.core.SdkBytes;
 import software.amazon.awssdk.services.ecs.EcsClient;
 import software.amazon.awssdk.services.ecs.model.ListServicesRequest;
 import software.amazon.awssdk.services.ecs.model.UpdateServiceRequest;
 import software.amazon.awssdk.services.lambda.LambdaClient;
-import software.amazon.awssdk.services.lambda.model.InvocationType;
-import software.amazon.awssdk.services.lambda.model.InvokeRequest;
-import software.amazon.awssdk.services.lambda.model.InvokeResponse;
 
 @RestController
 //@RequiredArgsConstructor
@@ -56,30 +51,37 @@ public class EmployeeController {
 
     private final Random random;
 
-    private final ThreadPoolTaskExecutor taskExecutor;
+//    private final ThreadPoolTaskExecutor taskExecutor;
 
     private final EmployeeService employeeService;
 
     public EmployeeController(final Map<Integer, Employee> employees, final RestTemplateBuilder restTemplateBuilder, final EcsClient ecsClient,
-        final LambdaClient lambdaClient, final Random random, final ThreadPoolTaskExecutor taskExecutor, final EmployeeService employeeService) {
+        final LambdaClient lambdaClient, final Random random, final EmployeeService employeeService) {
         this.employees = employees;
         this.restTemplate = restTemplateBuilder.build();
         this.ecsClient = ecsClient;
         this.lambdaClient = lambdaClient;
         this.random = random;
-        this.taskExecutor = taskExecutor;
+//        this.taskExecutor = taskExecutor;
         this.employeeService = employeeService;
     }
 
     @GetMapping("/employees")
 //    @CrossOrigin
-    List<Employee> getAllEmployees() {
+    ResponseEntity<List<Employee>> getAllEmployees() throws InterruptedException {
+        TimeUnit.MILLISECONDS.sleep(20);
         final var result = new ArrayList<>(employees.values());
 //        final var lib = new Library();
 //        log.info("value of imported lib: {}", lib.someLibraryMethod());
-        log.info(String.valueOf(result));
-        return result;
+//        log.info(String.valueOf(result));
+//        return result;
+        final var responseHeaders = new HttpHeaders();
+        responseHeaders.set("Connection", "keep-alive");
+//        responseHeaders.set("Connection", "close");
+        return ResponseEntity.ok().headers(responseHeaders).body(result);
     }
+
+    /*
 
     @PostMapping("/addItems")
     Map<String, String> addItemsToDynamoDbTable(@RequestBody final Map<String, Integer> request) {
@@ -111,6 +113,7 @@ public class EmployeeController {
         }).toList();
         return Map.of("result", listOfResults.toString());
     }
+     */
 
     @PostMapping("/employees")
 //    @CrossOrigin

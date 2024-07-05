@@ -1,11 +1,11 @@
 plugins {
     id 'java'
 //    id 'org.springframework.boot' version '3.2.2'
-    id 'org.springframework.boot' version '3.2.4'
+    id 'org.springframework.boot' version '3.3.1'
 //    id 'org.springframework.boot' version '2.7.18'
-    id 'io.spring.dependency-management' version '1.1.4'
+    id 'io.spring.dependency-management' version '1.1.5'
 //    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
-    id "io.freefair.lombok" version "8.4"
+    id "io.freefair.lombok" version "8.6"
 }
 
 group = 'org.example.employee'
@@ -32,7 +32,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
 //    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
-    implementation platform("software.amazon.awssdk:bom:2.23.14")
+    implementation platform("software.amazon.awssdk:bom:2.26.15")
     implementation "software.amazon.awssdk:ecs"
     implementation "software.amazon.awssdk:lambda"
 
@@ -46,6 +46,10 @@ dependencies {
 //    implementation 'com.amazonaws:aws-xray-recorder-sdk-spring'
 //    implementation 'com.amazonaws:aws-xray-recorder-sdk-apache-http'
 
+//    implementation 'org.apache.tomcat.embed:tomcat-embed-core:10.1.23'
+//    implementation 'org.apache.tomcat.embed:tomcat-embed-websocket:10.1.23'
+//    implementation 'org.apache.tomcat.embed:tomcat-embed-el:10.1.23'
+
 //    implementation 'org.apache.httpcomponents:httpclient'
     implementation 'org.apache.httpcomponents.client5:httpclient5'
 //    implementation 'org.apache.httpcomponents.client5:httpclient5:5.3.1'
@@ -57,13 +61,13 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
-//processResources {
-//    exclude 'application.*'
-//}
+processResources {
+    exclude 'application.*'
+}
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+        languageVersion = JavaLanguageVersion.of(21)
     }
 }
 
