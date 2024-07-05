@@ -65,19 +65,19 @@ public class EmployeeConfiguration {
             .id(1)
             .firstName("John")
             .lastName("Doe")
-            .email("jdoe at gmail.com")
+            .email("jdoe@gmail.com")
             .build());
         employees.put(2, Employee.builder()
             .id(2)
             .firstName("Mary")
             .lastName("Moe")
-            .email("mmoe at yahoo.com")
+            .email("mmoe@yahoo.com")
             .build());
         employees.put(3, Employee.builder()
             .id(2)
             .firstName("Ann")
             .lastName("McMann")
-            .email("ann.mcmann at yahoo.com")
+            .email("ann.mcmann@yahoo.com")
             .build());
 
         return employees;
