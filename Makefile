@@ -2,8 +2,8 @@
 
 IMAGE_NAME = employee-directory-api-server
 DROPBEAR_IMAGE_NAME = dropbear
-# VERSION = $(shell git log|head -1|awk '{print $$2}'|cut -c-6)
-VERSION = $(shell echo $$CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c-6)
+VERSION = $(shell git log|head -1|awk '{print $$2}'|cut -c-6)
+#VERSION = $(shell echo $$CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c-6)
 REGION = us-east-1
 AWS_ACCOUNT_ID = $(filter-out $@,$(MAKECMDGOALS))
 

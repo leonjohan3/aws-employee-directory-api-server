@@ -23,6 +23,7 @@ COPY getLatestConfig-linux.zip ${HOME}
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime  &&  echo $TZ > /etc/timezone  && \
 #     yum install -y bind-utils procps iproute nmap && \
 #     yum install -y less unzip groff && \
+    yum install -y unzip && \
 #     curl -s https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip -o /tmp/awscliv2.zip && \
 #     unzip -q -d /tmp/ /tmp/awscliv2.zip && /tmp/aws/install && rm /tmp/awscliv2.zip && \
     cd ${HOME} && unzip getLatestConfig-linux.zip && chmod u+x getLatestConfig && \
