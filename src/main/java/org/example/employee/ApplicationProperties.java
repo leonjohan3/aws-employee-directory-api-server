@@ -13,7 +13,7 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 public class ApplicationProperties {
 
-//    @NotNull(message = "mySecret must not be null")
-//    @Pattern(regexp = "^[a-z]{8}$", message = "mySecret must be 8 lowercase characters")
-//    private final String mySecret;
+    @NotNull(message = "mySecret must not be null")
+    @Pattern(regexp = "^[a-z]{8}$", message = "mySecret must be 8 lowercase characters")
+    private final String mySecret;
 }

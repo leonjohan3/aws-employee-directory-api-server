@@ -10,7 +10,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @SpringBootApplication(proxyBeanMethods = false)
 @Slf4j
 @EnableAsync
-//@EnableConfigurationProperties(ApplicationProperties.class)
+@EnableConfigurationProperties(ApplicationProperties.class)
 public class EmployeeDirectoryApplication implements CommandLineRunner {
 
     public static void main(String[] args) {

@@ -127,7 +127,8 @@ management:
 #        include: '*'
 
 #api:
-#app:
-#  config:
-#    my-secret: abcdefgh
+app:
+  config:
+    my-secret: abcdefgh
 #    remote-cidr-filter: 127.0.0.1/32
+secret: ${app.config.my-secret}
