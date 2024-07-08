@@ -3,6 +3,8 @@ package org.example.employee;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.TEXT_PLAIN_VALUE;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -16,10 +18,12 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,6 +41,7 @@ import software.amazon.awssdk.services.lambda.LambdaClient;
 //@CrossOrigin
 //@CrossOrigin(methods = {RequestMethod.DELETE, RequestMethod.GET, RequestMethod.OPTIONS, RequestMethod.POST})
 @Slf4j
+@Validated
 public class EmployeeController {
 
     public static final String LAMBDA_FUNCTION_NAME = System.getenv("LAMBDA_FUNCTION_NAME");
@@ -59,7 +64,11 @@ public class EmployeeController {
     private final String mySecret;
 
     public EmployeeController(final Map<Integer, Employee> employees, final RestTemplateBuilder restTemplateBuilder, final EcsClient ecsClient,
-        final LambdaClient lambdaClient, final Random random, final EmployeeService employeeService, final ApplicationProperties applicationProperties) {
+        final LambdaClient lambdaClient, final Random random, final EmployeeService employeeService,
+        @Value("${/my/${spring.profiles.active}/secret}")
+        @NotNull(message = "mySecret must not be null")
+        @Pattern(regexp = "^[a-z]{8}$", message = "mySecret must be 8 lowercase characters") final String mySecret) {
+
         this.employees = employees;
         this.restTemplate = restTemplateBuilder.build();
         this.ecsClient = ecsClient;
@@ -67,7 +76,7 @@ public class EmployeeController {
         this.random = random;
 //        this.taskExecutor = taskExecutor;
         this.employeeService = employeeService;
-        this.mySecret = applicationProperties.getMySecret();
+        this.mySecret = mySecret;
     }
 
     @GetMapping("/employees")
