@@ -22,8 +22,8 @@ spring:
 #    servlet:
 #      load-on-startup: 1
 #
-  main:
-    banner-mode: on
+#  main:
+#    banner-mode: on
 
   application:
     admin:
@@ -127,5 +127,7 @@ management:
 #        include: '*'
 
 #api:
-#  config:
+app:
+  config:
+    my-secret: abcdefgh
 #    remote-cidr-filter: 127.0.0.1/32

@@ -28,7 +28,7 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
-    // implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
 //    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
@@ -36,8 +36,8 @@ dependencies {
     implementation "software.amazon.awssdk:ecs"
     implementation "software.amazon.awssdk:lambda"
 
-//    implementation platform("io.awspring.cloud:spring-cloud-aws-dependencies:3.1.0")
-//    implementation 'io.awspring.cloud:spring-cloud-aws-starter'
+    implementation platform("io.awspring.cloud:spring-cloud-aws-dependencies:3.1.1")
+    implementation 'io.awspring.cloud:spring-cloud-aws-starter'
 
     implementation 'org.slf4j:jcl-over-slf4j'
 //    implementation 'org.example.starter:the-spring-boot-starter:0.0.1'
@@ -75,3 +75,6 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
+bootRun {
+    systemProperty 'spring.profiles.active', 'local'
+}

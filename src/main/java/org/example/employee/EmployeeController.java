@@ -1,6 +1,7 @@
 package org.example.employee;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.http.MediaType.TEXT_PLAIN_VALUE;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -55,8 +56,10 @@ public class EmployeeController {
 
     private final EmployeeService employeeService;
 
+    private final String mySecret;
+
     public EmployeeController(final Map<Integer, Employee> employees, final RestTemplateBuilder restTemplateBuilder, final EcsClient ecsClient,
-        final LambdaClient lambdaClient, final Random random, final EmployeeService employeeService) {
+        final LambdaClient lambdaClient, final Random random, final EmployeeService employeeService, final ApplicationProperties applicationProperties) {
         this.employees = employees;
         this.restTemplate = restTemplateBuilder.build();
         this.ecsClient = ecsClient;
@@ -64,6 +67,7 @@ public class EmployeeController {
         this.random = random;
 //        this.taskExecutor = taskExecutor;
         this.employeeService = employeeService;
+        this.mySecret = applicationProperties.getMySecret();
     }
 
     @GetMapping("/employees")
@@ -168,6 +172,11 @@ public class EmployeeController {
 //        return restTemplate.getForObject("http://checkip.amazonaws.com", String.class);
 //        return restTemplate.getForObject("https://7s87p0wg7e.execute-api.us-east-1.amazonaws.com/prod/getip", String.class);
 //        return String.format("THE_SSM_PARAM: %s", System.getenv("THE_SSM_PARAM"));
+    }
+
+    @GetMapping(value = "/my-secret", produces = TEXT_PLAIN_VALUE)
+    String getMySecret() {
+        return "my-secret: " + mySecret + System.lineSeparator();
     }
 
     @GetMapping(value = "/task", produces = APPLICATION_JSON_VALUE)
